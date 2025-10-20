@@ -48,14 +48,12 @@
             "2025-10-22": "Math Club Training - Nevon,Tineth",
             "2025-10-29": "Math Club Training - Thenujaya,Sithija",
             "2025-11-05": "Math Club Training - Kaveed,Yuthmika",
-            "2025-11-12": "Math Club Training - Mahima,Virajith",
-            "2025-11-19": "Math Club Training - Kusala,Deeghayu",
-            "2025-11-26": "Math Club Training - Kesaru,Vojithya",
-            "2025-12-03": "Math Club Training - Nevon,Tineth",
-            "2025-12-10": "Math Club Training - Thenujaya,Sithija",
-            "2025-12-17": "Math Club Training - Kaveed,Yuthmika",
-            "2025-12-24": "Math Club Training - Mahima,Virajith",
-            "2025-12-31": "Math Club Training - Kusala,Deeghayu"
+            "2025-11-26": "Math Club Training - Mahima,Virajith",
+            "2025-12-03": "Math Club Training - Kusala,Deeghayu",
+            "2025-12-10": "Math Club Training - Kesaru,Vojithya",
+            "2025-12-17": "Math Club Training - Nevon,Tineth",
+            "2025-12-24": "Math Club Training - Thenujaya,Sithija",
+            "2025-12-31": "Math Club Training - Kaveed,Yuthmika"
             // "YYYY-M-D": "Schedule details"
         };
 
@@ -67,6 +65,8 @@
         const saveBtn = document.getElementById('save-schedule');
         const closeBtn = document.getElementById('close-modal');
         let currentDateKey = '';
+
+        function pad(n) { return String(n).padStart(2, '0'); }
 
         function renderCalendar(year, month) {
             // Set month label
@@ -127,7 +127,7 @@
                 td.onclick = () => openModal(year, month, day);
                 td.innerHTML = `<div>${day}</div>`;
                 // Dot logic
-                const key = `${year}-${month+1}-${day}`;
+                const key = `${year}-${pad(month+1)}-${pad(day)}`;
                 let dotColor = schedules[key] && schedules[key].trim() ? "#0af" : "#fff";
                 td.innerHTML += `<span style="display:block; margin:0 auto; margin-top:4px; width:8px; height:8px; border-radius:50%; background:${dotColor};"></span>`;
                 tr.appendChild(td);
@@ -140,7 +140,7 @@
         }
 
         function openModal(year, month, day) {
-            currentDateKey = `${year}-${month+1}-${day}`;
+            currentDateKey = `${year}-${pad(month+1)}-${pad(day)}`;
             modalDate.textContent = `${day} ${new Date(year, month, 1).toLocaleString('default', { month: 'long' })} ${year}`;
             modalSchedule.innerHTML = schedules[currentDateKey] || "<span style='color:#888;'>No schedule for this date.</span>";
             modalSchedule.setAttribute("contenteditable", "false");
