@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RCMC</title>
+    <link rel="stylesheet" href="https://codepen.io/simeydotme/pen/jEOaeNd/63809857734821de257097bf620e7121.css">
+    <link rel="stylesheet" href="https://fonts.bunny.net/css?family=amaranth:400,400i,700,700i|asap-condensed:200,300i,400,400i,600,600i,700,700i,900,900i|asap:200,300i,400,400i,500,500i,600,600i,700,700i,900,900i|kode-mono:400,500,600,700">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./logo.jpg" type="image/jpeg">
+    <link rel="apple-touch-icon" href="./logo.jpg">
+    <meta name="msapplication-TileImage" content="./logo.jpg">
+</head>
+<body>
+    <main id="app">
+        <header>
+            <h1>Richmond College Math Club</h1>
+            <p>Right-click to open the menu</p>
+        </header>
+        <section style="margin-top:0;">
+            <div style="display:flex; flex-direction:column; align-items:center;">
+                <div id="calendar-area">
+                    <div id="calendar-header" style="display:flex; justify-content:center; align-items:center; margin-bottom:1em; width:400px;">
+                        <button id="prev-month" style="background:#222; color:#fff; border:none; border-radius:0.7em; width:1em; height:1.7em; font-size:1.2em; cursor:pointer; margin-right:1em; box-shadow:0 2px 8px #0004; transition:background 0.2s;" onmouseover="this.style.background='#0af'" onmouseout="this.style.background='#222'">&#8592;</button>
+                        <span id="month-label" style="font-family:'Amaranth',sans-serif; font-size:2em; color:#fff; padding:0.5em 1.5em; background:rgba(0,0,0,0.5); border-radius:1em; box-shadow:0 2px 8px #0004; flex:1; text-align:center;">Month Year</span>
+                        <button id="next-month" style="background:#222; color:#fff; border:none; border-radius:0.7em; width:1em; height:1.7em; font-size:1.2em; cursor:pointer; margin-left:1em; box-shadow:0 2px 8px #0004; transition:background 0.2s;" onmouseover="this.style.background='#0af'" onmouseout="this.style.background='#222'">&#8594;</button>
+                    </div>
+                    <div id="calendar-container" style="display: flex; justify-content: center; min-width:400px; max-width:400px;"></div>
+                </div>
+            </div>
+        </section>
+        <!-- Modal for schedule editing -->
+        <div id="schedule-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:1000;">
+            <div style="background:#222; color:#fff; padding:2em; border-radius:1em; min-width:300px; max-width:90vw; position:relative;">
+                <button id="close-modal" style="position:absolute; top:1em; right:1em; background:#444; color:#fff; border:none; border-radius:50%; width:2.4em; height:2.4em; padding:0; display:flex; align-items:center; justify-content:center; font-size:1.1em; line-height:1; box-sizing:border-box; cursor:pointer;">&times;</button>
+                <h3 id="modal-date"></h3>
+                <div id="modal-schedule" contenteditable="true" style="background:#333; min-height:100px; padding:1em; border-radius:0.5em; margin-top:1em;"></div>
+                <button id="save-schedule" style="margin-top:1em; background:#0af; color:#fff; border:none; padding:0.5em 1em; border-radius:0.5em; cursor:pointer;">Save</button>
+            </div>
+        </div>
+    </main>
+    <script>
+        const schedules = {
+            "2025-11-10": "Introduction  8:00 AM - 10:00 AM<br>Make Your Dream Coffee Shop  10:00 AM - 10:30 AM<br>Break  10:30 AM - 11:00 AM<br>Presentations  11:00 AM - 12:30 PM<br>Lunch  12:30 PM - 1:15 PM<br>Puzzles (CCTV, ART)  1:15 PM - 2:00 PM<br>Math Debate Introducing  2:00 PM - 3:00 PM<br>Break  3:00 PM - 3:30 PM<br>Feedbacks, Review and Ending  3:30 PM - 4:30 PM",
+            "2025-11-12": "Ice Breaker  8:00 AM - 8:15 AM<br>Lecture  8:15 AM - 9:15 AM<br>Treasure Hunting  9:15 AM - 10:30 AM<br>Break  10:30 AM - 11:00 AM<br>Introducing Math Drama  11:00 AM - 12:00 PM<br>Puzzles (Magic square)  12:00 PM - 12:30 PM<br>Lunch  12:30 PM - 1:15 PM<br>Math Debate  1:15 PM - 3:00 PM<br>Break  3:00 PM - 3:30 PM<br>Feedbacks, Review and Ending  3:30 PM - 4:30 PM",
+            "2025-11-17": "Ice Breaker  8:00 AM - 8:15 AM<br>Lecture  8:15 AM - 9:15 AM<br>Math Trail  9:15 AM - 10:30 AM<br>Break  10:30 AM - 11:00 AM<br>Math Modelling  11:00 AM - 12:30 PM<br>Lunch  12:30 PM - 1:15 PM<br>Math Drama  1:15 PM - 3:00 PM<br>Break  3:00 PM - 3:30 PM<br>Introducing Math Club Exco And Their Responsibilities  3:30 PM - 4:00 PM<br>Feedbacks, Review and Ending  4:00 PM - 4:30 PM",
+            "2025-11-19": "Ice Breaker  8:00 AM - 8:15 AM<br>Lecture  8:15 AM - 9:00 AM<br>Challenge To Other Schools  9:00 AM - 10:30 AM<br>Break  10:30 AM - 11:00 AM<br>Review The Programme And Solve Their Problems  11:00 AM - 12:30 PM<br>Lunch  12:30 PM - 1:15 PM<br>Certificate Awarding And Ending  1:15 PM - 4:30 PM",
+            "2025-10-22": "Math Club Training - Nevon,Tineth",
+            "2025-10-29": "Math Club Training - Thenujaya,Sithija",
+            "2025-11-05": "Math Club Training - Kaveed,Yuthmika",
+            "2025-11-12": "Math Club Training - Mahima,Virajith",
+            "2025-11-19": "Math Club Training - Kusala,Deeghayu",
+            "2025-11-26": "Math Club Training - Kesaru,Vojithya",
+            "2025-12-03": "Math Club Training - Nevon,Tineth",
+            "2025-12-10": "Math Club Training - Thenujaya,Sithija",
+            "2025-12-17": "Math Club Training - Kaveed,Yuthmika",
+            "2025-12-24": "Math Club Training - Mahima,Virajith",
+            "2025-12-31": "Math Club Training - Kusala,Deeghayu"
+            // "YYYY-M-D": "Schedule details"
+        };
+
+        // --- CALENDAR LOGIC ---
+        const calendarContainer = document.getElementById('calendar-container');
+        const modal = document.getElementById('schedule-modal');
+        const modalDate = document.getElementById('modal-date');
+        const modalSchedule = document.getElementById('modal-schedule');
+        const saveBtn = document.getElementById('save-schedule');
+        const closeBtn = document.getElementById('close-modal');
+        let currentDateKey = '';
+
+        function renderCalendar(year, month) {
+            // Set month label
+            const monthName = new Date(year, month, 1).toLocaleString('default', { month: 'long' });
+            document.getElementById('month-label').textContent = `${monthName} ${year}`;
+            calendarContainer.innerHTML = '';
+            const daysInMonth = new Date(year, month+1, 0).getDate();
+            const firstDay = new Date(year, month, 1).getDay();
+            const table = document.createElement('table');
+            table.style.borderCollapse = 'collapse';
+            table.style.background = 'rgba(34,34,34,0.95)';
+            table.style.color = '#fff';
+            table.style.borderRadius = '1em';
+            table.style.boxShadow = '0 4px 16px #0008';
+            table.style.marginTop = '0';
+            table.style.width = '400px';
+            table.style.maxWidth = '400px';
+            table.style.minWidth = '400px';
+            table.style.overflow = 'hidden';
+            table.style.fontFamily = "'Kode Mono', 'Amaranth', sans-serif";
+            // Days row
+            const daysRow = document.createElement('tr');
+            ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>{
+                const th = document.createElement('th');
+                th.textContent = d;
+                th.style.padding = '12px 0';
+                th.style.borderBottom = '2px solid #0af';
+                th.style.fontWeight = '700';
+                th.style.fontSize = '1.1em';
+                th.style.background = 'rgba(0,0,0,0.2)';
+                daysRow.appendChild(th);
+            });
+            table.appendChild(daysRow);
+            let tr = document.createElement('tr');
+            for(let i=0; i<firstDay; i++) {
+                const emptyTd = document.createElement('td');
+                emptyTd.style.background = 'transparent';
+                tr.appendChild(emptyTd);
+            }
+            for(let day=1; day<=daysInMonth; day++) {
+                if((firstDay+day-1)%7===0 && day>1) {
+                    table.appendChild(tr);
+                    tr = document.createElement('tr');
+                }
+                const td = document.createElement('td');
+                td.style.position = 'relative';
+                td.style.padding = '16px';
+                td.style.cursor = 'pointer';
+                td.style.border = '1px solid #222';
+                td.style.borderRadius = '0.5em';
+                td.style.background = 'rgba(0,0,0,0.3)';
+                td.style.transition = 'background 0.2s, color 0.2s';
+                td.style.width = '40px';
+                td.style.height = '40px';
+                td.style.textAlign = 'center';
+                td.onmouseover = () => { td.style.background='#0af'; td.style.color='#fff'; };
+                td.onmouseout = () => { td.style.background='rgba(0,0,0,0.3)'; td.style.color='#fff'; };
+                td.onclick = () => openModal(year, month, day);
+                td.innerHTML = `<div>${day}</div>`;
+                // Dot logic
+                const key = `${year}-${month+1}-${day}`;
+                let dotColor = schedules[key] && schedules[key].trim() ? "#0af" : "#fff";
+                td.innerHTML += `<span style="display:block; margin:0 auto; margin-top:4px; width:8px; height:8px; border-radius:50%; background:${dotColor};"></span>`;
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+            calendarContainer.appendChild(table);
+            // Month navigation
+            document.getElementById('prev-month').onclick = () => renderCalendar(month===0?year-1:year, month===0?11:month-1);
+            document.getElementById('next-month').onclick = () => renderCalendar(month===11?year+1:year, month===11?0:month+1);
+        }
+
+        function openModal(year, month, day) {
+            currentDateKey = `${year}-${month+1}-${day}`;
+            modalDate.textContent = `${day} ${new Date(year, month, 1).toLocaleString('default', { month: 'long' })} ${year}`;
+            modalSchedule.innerHTML = schedules[currentDateKey] || "<span style='color:#888;'>No schedule for this date.</span>";
+            modalSchedule.setAttribute("contenteditable", "false");
+            saveBtn.style.display = "none";
+            modal.style.display = 'flex';
+        }
+        closeBtn.onclick = () => { modal.style.display = 'none'; };
+        // Initial render
+        const now = new Date();
+        renderCalendar(now.getFullYear(), now.getMonth());
+    </script>
+    <!-- Menu copied from index.html -->
+<aside id="menu" class="open dark">
+    <span class="shine shine-top"></span>
+    <span class="shine shine-bottom"></span>
+    <span class="glow glow-top"></span>
+    <span class="glow glow-bottom"></span>
+    <span class="glow glow-bright glow-top "></span>
+    <span class="glow glow-bright glow-bottom "></span>
+    <div class="inner">
+        <label>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input type="text" placeholder="type a command or search" />
+        </label>
+        <section>
+            <header>Home</header>
+            <ul>
+                <li onclick="window.location.href='index.html'" tabindex="0" role="button" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <!-- Mathematics logo: π symbol -->
+                      <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M5 7h14M12 7v10m-4 0h8" />
+                      <text x="7" y="19" font-size="8" fill="currentColor" font-family="serif">π</text>
+                    </svg>
+                    RCMC
+                </li>
+            </ul>
+        </section>
+        <hr>
+        <section>
+            <header>Suggestions</header>
+            <ul>
+                <li onclick="window.location.href='projects.html'" tabindex="0" role="button" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V13.5Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V18Zm2.498-6.75h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V13.5Zm0 2.25h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V18Zm2.504-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5Zm0 2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V18Zm2.498-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5ZM8.25 6h7.5v2.25h-7.5V6ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0 0 12 2.25Z" />
+                    </svg>
+                    Projects
+                </li>
+                <li onclick="window.location.href='calendar.html'" tabindex="0" role="button" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                    </svg>
+                    Calendar
+                </li>
+                <li onclick="window.location.href='resources.html'" tabindex="0" role="button" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <!-- Logo: writing a paper using a pen -->
+                      <rect x="4" y="4" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                      <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M8 8h8M8 12h5"/>
+                      <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M16 20l2-5 2 2-5 2z"/>
+                      <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M18 17l-2-2"/>
+                    </svg>
+                    Resources
+                </li>
+            </ul>
+        </section>
+        <hr>
+        <section>
+            <header>Settings</header>
+            <ul>
+                <li onclick="window.location.href='contact.html'" tabindex="0" role="button" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                    Contact us
+                </li>
+            </ul>
+        </section>
+    </div>
+</aside>
+    <script src="./script.js"></script>
+    <script src="./colors.js"></script>
+    <script>
+        // Show menu on right-click (contextmenu) and close on left-click outside it.
+        const menu = document.getElementById('menu');
+        const calendarArea = document.getElementById('calendar-area');
+
+        // Prevent opening when redirected
+        let redirected = false;
+        if (window.performance && performance.getEntriesByType("navigation")[0]?.type === "reload") {
+            redirected = false;
+        } else if (document.referrer && document.referrer !== location.href) {
+            redirected = true;
+        }
+
+        // Open menu on right-click (contextmenu) unless the click is inside calendar area or redirection occurred
+        document.addEventListener('contextmenu', function(e) {
+            if (redirected) return;
+            if (calendarArea && calendarArea.contains(e.target)) return;
+            if (!menu) return;
+            e.preventDefault();
+            menu.classList.add('open');
+            menu.style.display = 'block';
+        });
+
+        // Close menu on normal click outside the menu and calendar area
+        document.addEventListener('click', function(e) {
+            if (!menu) return;
+            if (!menu.contains(e.target) && !(calendarArea && calendarArea.contains(e.target))) {
+                menu.classList.remove('open');
+                menu.style.display = '';
+            }
+        });
+    </script>
+</body>
+</html>

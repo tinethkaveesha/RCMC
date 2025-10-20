@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RCMC</title>
+    <link rel="stylesheet" href="https://codepen.io/simeydotme/pen/jEOaeNd/63809857734821de257097bf620e7121.css">
+    <link rel="stylesheet" href="https://fonts.bunny.net/css?family=amaranth:400,400i,700,700i|asap-condensed:200,300i,400,400i,600,600i,700,700i,900,900i|asap:200,300i,400,400i,500,500i,600,600i,700,700i,900,900i|kode-mono:400,500,600,700">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" type="image/svg+xml" href="rcmc-logo.svg">
+    <link rel="icon" href="./logo.jpg" type="image/jpeg">
+    <link rel="apple-touch-icon" href="./logo.jpg">
+    <meta name="msapplication-TileImage" content="./logo.jpg">
+    <style>
+        #myImg {
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        border: 3px solid #00fff7;
+        box-shadow:
+            0 0 10px #461d73,
+            0 0 20px #461d73,
+            0 0 30px #ee00,
+            0 0 40px #ee00;
+        }
+
+        #myImg:hover {opacity: 0.7;}
+
+        /* The Modal (background) */
+        .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+        }
+
+        /* Modal Content (image) */
+        .modal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+        }
+
+        /* Caption of Modal Image */
+        #caption {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+        text-align: center;
+        color: #ccc;
+        padding: 10px 0;
+        height: 150px;
+        }
+
+        /* Add Animation */
+        .modal-content, #caption {  
+        animation-name: zoom;
+        animation-duration: 0.6s;
+        }
+
+        @keyframes zoom {
+        from {transform: scale(0.1)} 
+        to {transform: scale(1)}
+        }
+
+        /* The Close Button */
+        .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+        }
+
+        /* 100% Image Width on Smaller Screens */
+        @media only screen and (max-width: 700px){
+        .modal-content {
+            width: 100%;
+        }
+        }
+
+        /* add these styles (place after the existing <style> block in head) */
+        .team-section {
+            padding: 2.5rem 1rem;
+            max-width: 1000px;
+            margin: 2rem auto;
+            color: #fff;
+            font-family: 'Amaranth', sans-serif;
+        }
+        .team-section h2 {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #0af;
+            text-shadow: 0 0 14px rgba(10,175,255,0.25), 0 0 30px rgba(127,0,255,0.08);
+        }
+        .team-cards {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .team-card {
+            background: linear-gradient(180deg, rgba(10,10,12,0.6), rgba(20,20,30,0.5));
+            border: 1px solid rgba(10,175,255,0.18);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 0 18px rgba(10,175,255,0.06);
+            padding: 1.2rem;
+            border-radius: 12px;
+            width: 320px;
+            min-height: 220px;
+            box-sizing: border-box;
+            backdrop-filter: blur(6px);
+        }
+        .team-card h3 {
+            margin: 0 0 0.6rem 0;
+            color: #7ff;
+            font-size: 1.15rem;
+            letter-spacing: .6px;
+        }
+        .team-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .team-card li {
+            margin: 0.45rem 0;
+            padding-left: 0.5rem;
+            color: #eaf8ff;
+            font-size: 1rem;
+            display:flex;
+            gap:0.6rem;
+            align-items:center;
+        }
+        .bullet {
+            display:inline-flex;
+            width:1.1em;
+            height:1.1em;
+            align-items:center;
+            justify-content:center;
+            background:#0af;
+            color:#012;
+            border-radius:50%;
+            font-size:0.75rem;
+            box-shadow: 0 0 10px rgba(10,175,255,0.4);
+        }
+        /* responsive */
+        @media (max-width:760px) {
+            .team-card { width: 100%; }
+            .team-section { padding: 1.5rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <main id="app">
+
+    <header>
+        <h1 style="font-size: 3rem;">Richmond College Math Club</h1>
+        <p>Right-click to open the menu</p>
+    </header>
+
+    <div style="text-align:center;">
+        <img id="myImg" src="./img1.jpg" alt="First Ever Trained Math Club Participants" width="300" height="200">
+        <h4>First Ever Trained Math Club Participants</h4>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById('myModal');
+
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img = document.getElementById('myImg');
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        img.onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+        modal.style.display = "none";
+        }
+    </script>
+    
+    <!-- insert this new section inside <main> before the closing </main> -->
+    <section class="team-section" id="our-team">
+        <h2>Our Team & Grade Coordinators</h2>
+        <div class="team-cards">
+            <div class="team-card">
+                <h3>Executive Committee</h3>
+                <ul>
+                    <li><span class="bullet">🔹</span> President — Thenujaya Bandara</li>
+                    <li><span class="bullet">🔹</span> Secretary — Virajith Randinu</li>
+                    <li><span class="bullet">🔹</span> Treasurer — Mahima Bashana</li>
+                    <li><span class="bullet">🔹</span> Public Relations Officer — Yuthmika Yasathma</li>
+                    <li><span class="bullet">🔹</span> Documentation Officers — Kaveed Nimedha</li>
+                    <li><span class="bullet">🔹</span> Master-in-charge — Suresh Indika</li>
+                </ul>
+            </div>
+
+            <div class="team-card">
+                <h3>Grade Coordinators</h3>
+                <ul>
+                    <li><span class="bullet">🔹</span> Grade 06 - Kusala Sipsara</li>
+                    <li><span class="bullet">🔹</span> Grade 07 - Thanuwara Deeghayu</li>
+                    <li><span class="bullet">🔹</span> Grade 08 - Kesaru Lankitha</li>
+                    <li><span class="bullet">🔹</span> Grade 09 - Vojithya Samudaya</li>
+                    <li><span class="bullet">🔹</span> Grade 10 - Nevon Thalgaswatta</li>
+                    <li><span class="bullet">🔹</span> Grade 11 - Tineth Kaveesha</li>
+                    <li><span class="bullet">🔹</span> Grade 12 - Sithija Praveen</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+<aside id="menu" class="open dark">
+    <span class="shine shine-top"></span>
+    <span class="shine shine-bottom"></span>
+    <span class="glow glow-top"></span>
+    <span class="glow glow-bottom"></span>
+    <span class="glow glow-bright glow-top "></span>
+    <span class="glow glow-bright glow-bottom "></span>
+    
+    <div class="inner">
+        
+        <label>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input type="text" placeholder="type a command or search" />
+        </label>
+        
+        <section>
+            <header>Home</header>
+            <ul>
+                <li onclick="window.location.href='index.html'" tabindex="0" role="button" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <!-- Mathematics logo: π symbol -->
+                      <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M5 7h14M12 7v10m-4 0h8" />
+                      <text x="7" y="19" font-size="8" fill="currentColor" font-family="serif">π</text>
+                    </svg>
+                    RCMC
+                </li>
+            </ul>
+        </section>
+        
+        <hr>
+
+        <section>
+            <header>Suggestions</header>
+            <ul>
+                <li onclick="window.location.href='projects.html'" tabindex="0" role="button" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V13.5Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V18Zm2.498-6.75h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V13.5Zm0 2.25h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V18Zm2.504-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5Zm0 2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V18Zm2.498-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5ZM8.25 6h7.5v2.25h-7.5V6ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0 0 12 2.25Z" />
+                    </svg>
+                    Projects
+                </li>
+                <li onclick="window.location.href='calendar.html'" tabindex="0" role="button" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                    </svg>
+                    Calendar
+                </li>
+                <li onclick="window.location.href='resources.html'" tabindex="0" role="button" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <!-- Logo: writing a paper using a pen -->
+                      <rect x="4" y="4" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                      <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M8 8h8M8 12h5"/>
+                      <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M16 20l2-5 2 2-5 2z"/>
+                      <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M18 17l-2-2"/>
+                    </svg>
+                    Resources
+                </li>
+            </ul>
+        </section>
+        
+        <hr>
+        
+        <section>
+            <header>Settings</header>
+            <ul>
+                <li onclick="window.location.href='contact.html'" tabindex="0" role="button" style="cursor:pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                    Contact us
+                </li>
+            </ul>
+        </section>
+        
+    </div>
+    
+</aside>
+
+
+
+<a class="social-icon codepen" href="https://facebook.com/" title="view my codepens">
+    Made by RCMC
+</a>
+
+<a class="social-icon twitter" href="https://twitter.com/">
+    <svg viewBox="0 0 24 24">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg>
+</a>
+
+<a class="social-icon instagram" href="https://instagram.com/">
+  <svg viewBox="0 0 24 24">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+    <rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="12" cy="12" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="16.5" cy="7.5" r="1" fill="currentColor"/>
+  </svg>
+</a>
+
+
+<script src="./script.js"></script>
+<script src="./colors.js"></script>
+</body>
+</html>
